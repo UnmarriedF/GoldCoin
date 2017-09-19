@@ -143,14 +143,11 @@ public class Box2dEffectView implements ApplicationListener {
     }
 
     public void addStar(boolean isLeft, boolean isSelf) {
-
+        //是否能继续绘制，不能则返回
         if (!m_candraw)
             return;
-
         _totalLimitsLogic();
-
         synchronized (Box2dEffectView.class) {
-
             BodyDef BallBodydef = new BodyDef();
             BallBodydef.type = BodyDef.BodyType.DynamicBody;
 
@@ -160,7 +157,6 @@ public class Box2dEffectView implements ApplicationListener {
             if (isLeft) {
                 BallBodydef.linearVelocity.set(thrownXRandom, thrownYRandom);
                 BallBodydef.position.set(new Vector2(-camera.viewportWidth / 2 + 2f, camera.viewportHeight / 2 - yRandomStart));
-
             } else {
                 BallBodydef.linearVelocity.set(-thrownXRandom, thrownYRandom);
                 BallBodydef.position.set(new Vector2(camera.viewportWidth / 2 - 2f, camera.viewportHeight / 2 - yRandomStart));
@@ -180,9 +176,7 @@ public class Box2dEffectView implements ApplicationListener {
             BallFixtureDef.restitution = 0.5f; // Make it bounce a little bit
             BallBody.createFixture(BallFixtureDef);
             shape.dispose();
-
             m_ballBodys.add(BallBody);
-
             if (m_ballBodys.size() == 1)
                 m_box2dSenserLogic.startListener();
         }
@@ -191,14 +185,10 @@ public class Box2dEffectView implements ApplicationListener {
     private boolean m_randomGiftLeft = false;//礼物在屏幕左侧
 
     public void addGift(int index) {
-
         if (!m_candraw)
             return;
-
         _totalLimitsLogic();
-
         synchronized (Box2dEffectView.class) {
-
             BodyDef BallBodydef = new BodyDef();
             BallBodydef.type = BodyDef.BodyType.DynamicBody;
 
@@ -268,7 +258,6 @@ public class Box2dEffectView implements ApplicationListener {
     }
 
     private void _totalLimitsLogic() {
-
         synchronized (Box2dEffectView.class) {
             if (m_ballBodys.size() > Box2dConstant.MaxBallCounter) {
                 destoryBody(0);
@@ -324,13 +313,12 @@ public class Box2dEffectView implements ApplicationListener {
             }
 
             widthSize = widthSize * ballInfo.getRandomScale() * Box2DFragment.s_scale;
-            //绘制
 
+            //绘制
             if (tempTexture != null) {
                 m_spriteBatch.setColor(new Color(1, 1, 1, alphascale * 0.6f));
                 m_spriteBatch.draw(tempTexture, transformVect.x + (1f - alphascale) * widthSize, transformVect.y + (1f - alphascale) * widthSize, alphascale * widthSize * 2f, alphascale * widthSize * 2f);
             }
-
         }
         m_spriteBatch.end();
     }
@@ -345,10 +333,13 @@ public class Box2dEffectView implements ApplicationListener {
         return als;
     }
 
+    /**
+     * 根据下标，销毁金币
+     * @param indexofbodys
+     */
     private void destoryBody(int indexofbodys) {
         Body body = m_ballBodys.remove(indexofbodys);
         world.destroyBody(body);
-
         if (m_ballBodys.size() == 0) {
             m_box2dSenserLogic.stopListener();
         }
@@ -359,10 +350,8 @@ public class Box2dEffectView implements ApplicationListener {
     }
 
     private class MyContactListener implements ContactListener {
-
         @Override
         public void beginContact(Contact contact) {
-
             BallInfo ballInfoA = (BallInfo) contact.getFixtureA().getBody().getUserData();
             BallInfo ballInfoB = (BallInfo) contact.getFixtureB().getBody().getUserData();
             if (ballInfoA != null && ballInfoB != null) {
@@ -372,17 +361,14 @@ public class Box2dEffectView implements ApplicationListener {
 
         @Override
         public void endContact(Contact contact) {
-
         }
 
         @Override
         public void preSolve(Contact contact, Manifold manifold) {
-
         }
 
         @Override
         public void postSolve(Contact contact, ContactImpulse contactImpulse) {
-
         }
     }
 }

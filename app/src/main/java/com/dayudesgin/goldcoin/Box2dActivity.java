@@ -68,6 +68,8 @@ public class Box2dActivity extends AppCompatActivity implements AndroidFragmentA
         });
     }
 
+
+    //左右式
     private boolean m_testleft = false;
     private Runnable m_runnableCrazyMode = new Runnable() {
         @Override
@@ -77,14 +79,12 @@ public class Box2dActivity extends AppCompatActivity implements AndroidFragmentA
             m_weakHandler.postDelayed(m_runnableCrazyMode, 50);
         }
     };
-
     private boolean m_testleft1 = false;
     private int counter = 0;
     private Runnable m_runnableSendGift = new Runnable() {
         @Override
         public void run() {
-            if (counter == m_giftCounter)
-            {
+            if (counter == m_giftCounter) {
                 counter = 0;
                 return;
             }
@@ -94,7 +94,6 @@ public class Box2dActivity extends AppCompatActivity implements AndroidFragmentA
             m_weakHandler.postDelayed(m_runnableSendGift, 50);
         }
     };
-
     private boolean m_testleft2 = false;
     private Runnable m_runnableSendStar = new Runnable() {
         @Override
@@ -108,17 +107,21 @@ public class Box2dActivity extends AppCompatActivity implements AndroidFragmentA
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //广播解绑
         unregisterReceiver(m_systemreceiveBroadCast);
+        //移除监听回调
         m_weakHandler.removeCallbacks(m_runnableCrazyMode);
+        //黄油刀解绑
         ButterKnife.unbind(this);
     }
 
     @Override
     public void exit() {
-
     }
 
+    //再次点击退出
     private long m_exitTime;
+
     private boolean checkquit() {
         if ((System.currentTimeMillis() - m_exitTime) > 2000) {
             Toast.makeText(this, "再次点击退出", Toast.LENGTH_SHORT).show();
@@ -130,11 +133,9 @@ public class Box2dActivity extends AppCompatActivity implements AndroidFragmentA
     }
 
     public class SystemReceiveBroadCast extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
-
-           // Log.d(MainActivity.class.getSimpleName(), "SystemReceiveBroadCast[^^^^^^^]play Particle Receive: " + intent.getAction());
+            // Log.d(MainActivity.class.getSimpleName(), "SystemReceiveBroadCast[^^^^^^^]play Particle Receive: " + intent.getAction());
             if (intent.getAction().equals(GiftParticleContants.BROADCAST_GIFTPARTICLE_BACKKEY)) {
                 checkquit();
             }
@@ -144,12 +145,12 @@ public class Box2dActivity extends AppCompatActivity implements AndroidFragmentA
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
+        //当屏幕发生变化的时候，设置动画布局match_parent
         showBox2dFgmFullScreen();
     }
 
-    private void showBox2dFgmFullScreen(){
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)m_container.getLayoutParams();
+    private void showBox2dFgmFullScreen() {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) m_container.getLayoutParams();
         params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         params.height = RelativeLayout.LayoutParams.MATCH_PARENT;
         m_container.setLayoutParams(params);

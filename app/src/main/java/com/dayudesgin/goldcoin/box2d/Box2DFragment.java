@@ -87,7 +87,6 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
     @Override
     public void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
-
         cleanGDX();
         buildGDX();
     }
